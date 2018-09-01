@@ -1,0 +1,15 @@
+#|-*- mode:lisp -*-|#
+(in-package :cl-user)
+(defpackage :lake.user
+  (:use :cl :lake :cl-syntax)
+  (:shadowing-import-from :lake
+                          :directory))
+(in-package :lake.user)
+
+(use-syntax :interpol)
+
+(task "default" ())
+
+(namespace "prml"
+  (namespace "chapter1"
+    (task "fig1-2" () (load "chapter1/src/fig1-02"))))
