@@ -39,6 +39,8 @@
                                       :collect (erms test-x
                                                      test-y
                                                      (aref training-w i))))))
+    (vgplot:format-plot t "set terminal qt enhanced")
+
     (vgplot:plot m training-erms "-b;訓練;"
                  m test-erms "-r;テスト;"
                  m training-erms "ob;"
@@ -48,8 +50,8 @@
     (vgplot:grid nil)
     (vgplot:format-plot t "set xtics 3")
     (vgplot:format-plot t "set ytics 0.5")
-    (vgplot:xlabel "x")
-    (vgplot:ylabel "t")
+    (vgplot:xlabel "M")
+    (vgplot:ylabel "E{/*0.7 RMS}")
 
     (vgplot:print-plot #P"chapter1/img/fig1-05.png" :terminal "pngcairo")
     (sleep 3)
