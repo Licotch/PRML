@@ -95,7 +95,7 @@
          (x2 (first data))
          (y2 (second data))
          (x3 x1))
-    (vgplot:format-plot t "set terminal pngcairo dashed enhanced")
+    (vgplot:format-plot t "set terminal pngcairo")
     (vgplot:format-plot t "set output 'chapter1/img/fig1-04.png'")
 
     (vgplot:subplot 2 2 0)
