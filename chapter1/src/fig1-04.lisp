@@ -99,7 +99,7 @@
     (vgplot:format-plot t "set output 'chapter1/img/fig1-04.png'")
 
     (vgplot:subplot 2 2 0)
-    (vgplot:plot x1 y1 "b;"
+    (vgplot:plot x1 y1 "g;"
                  x2 y2 "ob;"
                  x3 (estimated-y x3 (minimized-w x2 y2 0)) "r;")
     (vgplot:format-plot t "set xtics 1")
@@ -111,21 +111,21 @@
     (vgplot:grid nil)
 
     (vgplot:subplot 2 2 1)
-    (vgplot:plot x1 y1 "b;"
+    (vgplot:plot x1 y1 "g;"
                  x2 y2 "ob;"
                  x3 (estimated-y x3 (minimized-w x2 y2 1)) "r;")
     (vgplot:text 0.8 1 "M = 1" :tag 1)
     (vgplot:grid nil)
 
     (vgplot:subplot 2 2 2)
-    (vgplot:plot x1 y1 "b;"
+    (vgplot:plot x1 y1 "g;"
                  x2 y2 "ob;"
                  x3 (estimated-y x3 (minimized-w x2 y2 3)) "r;")
     (vgplot:text 0.8 1 "M = 3" :tag 1)
     (vgplot:grid nil)
 
     (vgplot:subplot 2 2 3)
-    (vgplot:plot x1 y1 "b;"
+    (vgplot:plot x1 y1 "g;"
                  x2 y2 "ob;"
                  x3 (estimated-y x3 (minimized-w x2 y2 9)) "r;")
     (vgplot:text 0.8 1 "M = 9" :tag 1)
