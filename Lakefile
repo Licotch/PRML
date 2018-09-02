@@ -12,4 +12,5 @@
 
 (namespace "prml"
   (namespace "chapter1"
-    (task "fig1-2" () (load "chapter1/src/fig1-02"))))
+    (task "fig1-2" () (load "chapter1/src/fig1-02"))
+    (task "fig1-4" () (load "chapter1/src/fig1-04"))))
