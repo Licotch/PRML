@@ -4,7 +4,7 @@
 (in-package :cl-user)
 (defpackage :prml.chapter1
   (:use :cl)
-  (:export :fig1-04))
+  (:export :fig1-4))
 (in-package :prml.chapter1)
 
 (defun row-last (matrix row)
