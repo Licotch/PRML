@@ -12,9 +12,6 @@
   (let* ((x1 (vgplot:range 0 101/100 1/100))
          (y1 (map 'vector #'(lambda (x) (sin (* 2 pi x))) x1))
          (data (vgplot:load-data-file "data.csv")))
-    (vgplot:format-plot t "set terminal pngcairo")
-    (vgplot:format-plot t "set output 'chapter1/img/fig1-02.png'")
-
     (vgplot:plot x1 y1 "g;"
                  (first data) (second data) "ob;")
     (vgplot:axis '(-0.1 1.1 -1.5 1.5))
@@ -24,6 +21,8 @@
     (vgplot:xlabel "x")
     (vgplot:ylabel "t")
 
-    (vgplot:format-plot t "unset output")))
+    (vgplot:print-plot #P"chapter1/img/fig1-02.png" :terminal "pngcairo")
+    (sleep 3)
+    (vgplot:close-all-plots)))
 
 (fig1-2)
