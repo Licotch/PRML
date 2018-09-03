@@ -1,5 +1,4 @@
 (defsystem :prml
-  :depends-on (:vgplot)
   :serial t
   :components ((:file "package")
                (:module "src"
