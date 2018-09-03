@@ -115,7 +115,7 @@
                                       :collect (erms test-x
                                                      test-y
                                                      (aref training-w i))))))
-    (vgplot:format-plot t "set terminal qt enhanced")
+    (vgplot:format-plot nil "set terminal qt enhanced")
 
     (vgplot:plot m training-erms "-b;訓練;"
                  m test-erms "-r;テスト;"
@@ -124,7 +124,7 @@
     (vgplot:legend :northwest)
     (vgplot:axis '(-1 10 0 1))
     (vgplot:grid nil)
-    (vgplot:format-plot t "set xtics 3")
-    (vgplot:format-plot t "set ytics 0.5")
+    (vgplot:format-plot nil "set xtics 3")
+    (vgplot:format-plot nil "set ytics 0.5")
     (vgplot:xlabel "M")
     (vgplot:ylabel "E{/*0.7 RMS}")))

@@ -95,8 +95,8 @@
     (vgplot:plot x1 y1 "g;"
                  x2 y2 "ob;"
                  x3 (estimated-y x3 (minimized-w x2 y2 0)) "r;")
-    (vgplot:format-plot t "set xtics 1")
-    (vgplot:format-plot t "set ytics 1")
+    (vgplot:format-plot nil "set xtics 1")
+    (vgplot:format-plot nil "set ytics 1")
     (vgplot:axis '(-0.1 1.1 -1.5 1.5))
     (vgplot:xlabel "x")
     (vgplot:ylabel "t")
@@ -124,4 +124,4 @@
     (vgplot:text 0.8 1 "M = 9" :tag 1)
     (vgplot:grid nil)
 
-    (vgplot:format-plot t "unset multiplot")))
+    (vgplot:format-plot nil "unset multiplot")))
