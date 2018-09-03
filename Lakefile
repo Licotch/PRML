@@ -8,8 +8,7 @@
 
 (use-syntax :interpol)
 
-(ql:quickload '(:prml
-                :vgplot)
+(ql:quickload '(:prml)
               :silent t)
 
 (defun save-plot (plot-function file-name)
