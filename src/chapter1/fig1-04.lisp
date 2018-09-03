@@ -1,8 +1,5 @@
 (in-package :prml.chapter1)
 
-(ql:quickload '(:vgplot)
-              :silent t)
-
 (defun row-last (matrix row)
   (aref matrix row (1- (array-dimension matrix 1))))
 
