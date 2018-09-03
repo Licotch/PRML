@@ -18,10 +18,17 @@
   (sleep 3)
   (vgplot:close-all-plots))
 
+(defun save-multiplot (plot-function file-name)
+  (vgplot:format-plot nil "set terminal pngcairo")
+  (vgplot:format-plot nil "set output '~a'" file-name)
+  (funcall plot-function)
+  (vgplot:format-plot nil "unset output")
+  (vgplot:close-all-plots))
+
 (task "default" ())
 
 (namespace "prml"
   (namespace "chapter1"
     (task "fig1-2" () (save-plot #'prml.chapter1:fig1-2 #P"img/chapter1/fig1-02.png"))
-    (task "fig1-4" () (save-plot #'prml.chapter1:fig1-4 #P"img/chapter1/fig1-04.png"))
+    (task "fig1-4" () (save-multiplot #'prml.chapter1:fig1-4 #P"img/chapter1/fig1-04.png"))
     (task "fig1-5" () (save-plot #'prml.chapter1:fig1-5 #P"img/chapter1/fig1-05.png"))))
