@@ -115,8 +115,6 @@
                                       :collect (erms test-x
                                                      test-y
                                                      (aref training-w i))))))
-    (vgplot:new-plot)
-
     (vgplot:format-plot nil "set terminal qt enhanced")
 
     (vgplot:plot m training-erms "-b;訓練;"

@@ -91,8 +91,6 @@
          (x2 (first data))
          (y2 (second data))
          (x3 x1))
-    (vgplot:new-plot)
-
     (vgplot:subplot 2 2 0)
     (vgplot:plot x1 y1 "g;"
                  x2 y2 "ob;"
