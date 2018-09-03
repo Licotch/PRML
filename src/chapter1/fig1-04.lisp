@@ -122,6 +122,5 @@
                  x2 y2 "ob;"
                  x3 (estimated-y x3 (minimized-w x2 y2 9)) "r;")
     (vgplot:text 0.8 1 "M = 9" :tag 1)
-    (vgplot:grid nil)
+    (vgplot:grid nil)))
 
-    (vgplot:format-plot nil "unset multiplot")))

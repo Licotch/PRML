@@ -22,6 +22,7 @@
   (vgplot:format-plot nil "set terminal pngcairo")
   (vgplot:format-plot nil "set output '~a'" file-name)
   (funcall plot-function)
+  (vgplot:format-plot nil "unset multiplot")
   (vgplot:format-plot nil "unset output")
   (vgplot:close-all-plots))
 
