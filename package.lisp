@@ -1,13 +1,5 @@
 (in-package :cl-user)
 
-(defpackage :util
-  (:use :cl)
-  (:export
-   :minimized-w :estimated-y))
-
-(defpackage :prml
-  (:use :cl))
-
 (defpackage :prml.chapter1
   (:use :cl)
   (:export
