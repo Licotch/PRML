@@ -1,12 +1,7 @@
-;(ql:quickload '()
-;              :silent t)
+(in-package :prml.chapter1)
 
-(in-package :cl-user)
-(defpackage :util
-  (:use :cl)
-  (:export :minimized-w
-           :estimated-y))
-(in-package :util)
+(ql:quickload '(:vgplot)
+              :silent t)
 
 (defun row-last (matrix row)
   (aref matrix row (1- (array-dimension matrix 1))))
@@ -88,3 +83,48 @@
            (dotimes (i (1- (length w)) y)
              (setf y (+ y (* (aref w (1+ i)) (expt xi (1+ i))))))))
        x))
+
+(defun e (x y w)
+  (* 1/2 (loop :for n :below (length x)
+               :summing (expt (- (aref (estimated-y x w) n) (aref y n)) 2))))
+
+(defun erms (x y w)
+  (sqrt (/ (* 2 (e x y w)) (length x))))
+
+(defun fig1-5 ()
+  (let* ((m (vgplot:range 0 10))
+         (training-data (vgplot:load-data-file (asdf:system-relative-pathname :prml "data/data.csv")))
+         (training-x (first training-data))
+         (training-y (second training-data))
+         (training-w (make-array 10
+                                 :initial-contents
+                                 (loop :for m :across m
+                                       :collect (minimized-w training-x training-y m))))
+         (training-erms (make-array 10
+                                    :initial-contents
+                                    (loop :for i :upto 9
+                                          :collect (erms training-x
+                                                         training-y
+                                                         (aref training-w i)))))
+         (test-data (vgplot:load-data-file (asdf:system-relative-pathname :prml "data/test-data.csv")))
+         (test-x (first test-data))
+         (test-y (second test-data))
+         (test-erms (make-array 10
+                                :initial-contents
+                                (loop :for i :upto 9
+                                      :collect (erms test-x
+                                                     test-y
+                                                     (aref training-w i))))))
+    (vgplot:format-plot t "set terminal qt enhanced")
+
+    (vgplot:plot m training-erms "-b;訓練;"
+                 m test-erms "-r;テスト;"
+                 m training-erms "ob;"
+                 m test-erms "or;")
+    (vgplot:legend :northwest)
+    (vgplot:axis '(-1 10 0 1))
+    (vgplot:grid nil)
+    (vgplot:format-plot t "set xtics 3")
+    (vgplot:format-plot t "set ytics 0.5")
+    (vgplot:xlabel "M")
+    (vgplot:ylabel "E{/*0.7 RMS}")))

@@ -1,11 +1,7 @@
+(in-package :prml.chapter1)
+
 (ql:quickload '(:vgplot)
               :silent t)
-
-(in-package :cl-user)
-(defpackage :prml.chapter1
-  (:use :cl)
-  (:export :fig1-4))
-(in-package :prml.chapter1)
 
 (defun row-last (matrix row)
   (aref matrix row (1- (array-dimension matrix 1))))
@@ -91,13 +87,10 @@
 (defun fig1-4 ()
   (let* ((x1 (vgplot:range 0 101/100 1/100))
          (y1 (map 'vector (lambda (x) (sin (* 2 pi x))) x1))
-         (data (vgplot:load-data-file "data.csv"))
+         (data (vgplot:load-data-file (asdf:system-relative-pathname :prml "data/data.csv")))
          (x2 (first data))
          (y2 (second data))
          (x3 x1))
-    (vgplot:format-plot t "set terminal pngcairo")
-    (vgplot:format-plot t "set output 'chapter1/img/fig1-04.png'")
-
     (vgplot:subplot 2 2 0)
     (vgplot:plot x1 y1 "g;"
                  x2 y2 "ob;"
@@ -131,7 +124,4 @@
     (vgplot:text 0.8 1 "M = 9" :tag 1)
     (vgplot:grid nil)
 
-    (vgplot:format-plot t "unset multiplot")
-    (vgplot:format-plot t "unset output")))
-
-(fig1-4)
+    (vgplot:format-plot t "unset multiplot")))
