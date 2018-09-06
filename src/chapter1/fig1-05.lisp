@@ -1,42 +1,44 @@
 (in-package :prml.chapter1)
 
-(defun row-last (matrix row)
-  (aref matrix row (1- (array-dimension matrix 1))))
+(defun row-dimention (matrix)
+  (array-dimension matrix 1))
 
-(defun row (matrix row)
-  (let ((row-dimention (array-dimension matrix 1)))
+(defun last-value-of-row (matrix nth-row)
+  (aref matrix nth-row (1- (row-dimention matrix))))
+
+(defun row (matrix nth-row)
+  (let ((row-dimention (row-dimention matrix)))
     (make-array row-dimention
                :initial-contents
-               (loop :for column :from 0 :below row-dimention
-                     :collect (aref matrix row column)))))
+               (loop :for current-column :from 0 :below row-dimention
+                     :collect (aref matrix nth-row current-column)))))
 
-(defun swap-rows! (matrix row1 row2)
-  (let ((tmp-row (row matrix row1)))
-    (dotimes (column (array-dimension matrix 1) matrix)
-      (setf (aref matrix row1 column) (aref matrix row2 column))
-      (setf (aref matrix row2 column) (aref tmp-row column)))))
+(defun swap-rows! (matrix swap-from swap-to)
+  (let ((row-swap-to (row matrix swap-to)))
+    (dotimes (current-column (row-dimention matrix) matrix)
+      (setf (aref matrix swap-to current-column) (aref matrix swap-from current-column))
+      (setf (aref matrix swap-from current-column) (aref row-swap-to current-column)))))
 
-(defun add-row-to-multiplied-row! (matrix row1 row2 n)
-  (let ((multiplied-row (make-array (array-dimension matrix 1)
-                                    :initial-contents
-                                    (loop :for element :across (row matrix row2)
-                                          :collect (* element n)))))
-    (dotimes (column (array-dimension matrix 1) matrix)
-      (setf (aref matrix row1 column) (+ (aref matrix row1 column) (aref multiplied-row column))))))
+(defun add-row-to-multiplied-row! (matrix nth-row-to-be-added nth-row-to-be-multiplied n)
+  (dotimes (current-column (row-dimention matrix) matrix)
+    (setf (aref matrix nth-row-to-be-added current-column)
+          (+ (aref matrix nth-row-to-be-added current-column)
+             (* (aref matrix nth-row-to-be-multiplied current-column) n)))))
 
-(defun multiply-to-row! (matrix row n)
-  (dotimes (column (array-dimension matrix 1) matrix)
-    (setf (aref matrix row column) (* (aref matrix row column) n))))
+(defun multiply-to-row! (matrix nth-row n)
+  (dotimes (current-column (row-dimention matrix) matrix)
+    (setf (aref matrix nth-row current-column) (* (aref matrix nth-row current-column) n))))
 
-(defun gaussian-elimination (matrix)
+(defun gaussian-elimination! (matrix)
   (let* ((m (array-dimension matrix 0))
          (w (make-array m))
          (current-column))
     (block gaussian-elimination
-      ;;; gaussian-elimination
+      ;; gaussian elimination
       (dotimes (current-row m)
         (setf current-column current-row)
 
+        ;; if 0 in current row and current column then swap to another row
         (when (zerop (aref matrix current-row current-column))
           (let ((row-swap-to (1+ current-row)))
             (tagbody swap-part
@@ -47,9 +49,11 @@
                    (return-from gaussian-elimination nil))
                (swap-rows! matrix current-row row-swap-to))))
 
+        ;; get a 1 in current row, current column.
         (and (not (= 1 (aref matrix current-row current-column)))
              (multiply-to-row! matrix current-row (/ 1 (aref matrix current-row current-column))))
 
+        ;; get a 0 in another row, current column.
         (dotimes (row-added-to-current-row m)
           (and (not (= row-added-to-current-row current-row))
                (not (zerop (aref matrix row-added-to-current-row current-column)))
@@ -57,9 +61,9 @@
                                            row-added-to-current-row
                                            current-row
                                            (* -1 (aref matrix row-added-to-current-row current-column))))))
-      ;;; make retern data
+      ;;; make the retern data
       (dotimes (i m w)
-        (setf (aref w i) (row-last matrix i))))))
+        (setf (aref w i) (last-value-of-row matrix i))))))
 
 (defun minimized-w (x y m)
   (labels ((aij (i j)
@@ -71,47 +75,44 @@
         (dotimes (j (+ 2 m))
           (setf (aref matrix i j) (aij i j)))
         (setf (aref matrix i (+ 1 m)) (ti i)))
-      (gaussian-elimination matrix))))
+      (gaussian-elimination! matrix))))
+
+(defun estimated-yn (xn w)
+  (let ((yn (aref w 0)))
+    (do ((i 1 (1+ i)))
+        ((>= i (length w)) yn)
+      (setf yn (+ yn (* (aref w i) (expt xn i)))))))
 
 (defun estimated-y (x w)
-  (map 'vector
-       (lambda (xi)
-         (let ((y (aref w 0)))
-           (dotimes (i (1- (length w)) y)
-             (setf y (+ y (* (aref w (1+ i)) (expt xi (1+ i))))))))
-       x))
+  (map 'vector (lambda (xn) (estimated-yn xn w)) x))
 
 (defun e (x y w)
   (* 1/2 (loop :for n :below (length x)
-               :summing (expt (- (aref (estimated-y x w) n) (aref y n)) 2))))
+               :summing (expt (- (estimated-yn (aref x n) w) (aref y n)) 2))))
 
 (defun erms (x y w)
   (sqrt (/ (* 2 (e x y w)) (length x))))
 
 (defun fig1-5 ()
   (let* ((m (vgplot:range 0 10))
-         (training-data (vgplot:load-data-file (asdf:system-relative-pathname :prml "data/data.csv")))
-         (training-x (first training-data))
-         (training-y (second training-data))
-         (training-w (make-array 10
-                                 :initial-contents
-                                 (loop :for m :across m
-                                       :collect (minimized-w training-x training-y m))))
-         (training-erms (make-array 10
-                                    :initial-contents
-                                    (loop :for i :upto 9
-                                          :collect (erms training-x
-                                                         training-y
-                                                         (aref training-w i)))))
-         (test-data (vgplot:load-data-file (asdf:system-relative-pathname :prml "data/test-data.csv")))
-         (test-x (first test-data))
-         (test-y (second test-data))
-         (test-erms (make-array 10
-                                :initial-contents
-                                (loop :for i :upto 9
-                                      :collect (erms test-x
-                                                     test-y
-                                                     (aref training-w i))))))
+         (training-set (vgplot:load-data-file (asdf:system-relative-pathname :prml "data/data.csv")))
+         (x (first training-set))
+         (y (second training-set))
+         (test-data-set (vgplot:load-data-file (asdf:system-relative-pathname :prml "data/test-data.csv")))
+         (test-x (first test-data-set))
+         (test-y (second test-data-set))
+         (trained-w-array (make-array 10
+                                      :initial-contents
+                                      (loop :for m :upto 9
+                                            :collect (minimized-w x y m))))
+         (training-erms (loop :for m :upto 9
+                              :collect (erms x
+                                             y
+                                             (aref trained-w-array m))))
+         (test-erms (loop :for m :upto 9
+                          :collect (erms test-x
+                                         test-y
+                                         (aref trained-w-array m)))))
     (vgplot:format-plot nil "set terminal qt enhanced")
 
     (vgplot:plot m training-erms "-b;訓練;"
