@@ -90,14 +90,14 @@
   (let* ((sin-x (vgplot:range 0 101/100 1/100))
          (sin-y (map 'vector (lambda (x) (sin (* 2 pi x))) sin-x))
          (training-set (vgplot:load-data-file (asdf:system-relative-pathname :prml "data/data.csv")))
-         (observed-x (first training-set))
-         (observed-y (second training-set))
+         (x (first training-set))
+         (y (second training-set))
          (estimated-x sin-x))
     (labels ((subplot (subplot-n m)
                (vgplot:subplot 2 2 subplot-n)
                (vgplot:plot sin-x sin-y "g;"
-                            observed-x observed-y "ob;"
-                            estimated-x (estimated-y estimated-x (minimized-w observed-x observed-y m)) "r;")
+                            x y "ob;"
+                            estimated-x (estimated-y estimated-x (minimized-w x y m)) "r;")
                (vgplot:text 0.8 1 (format nil "M = ~a" m) :tag 1)
                (vgplot:grid nil)))
       (vgplot:subplot 2 2 0)
