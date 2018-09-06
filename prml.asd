@@ -1,12 +1,11 @@
 (defsystem :prml
-  :depends-on (#:vgplot #:alexandria)
-  :serial t
+  :depends-on ("vgplot" "alexandria")
   :components ((:file "package")
                (:module "src"
-                :serial t
+                :depends-on ("package")
                 :components ((:module "chapter1"
-                              :serial t
-                              :components ((:file "fig1-02")
-                                           (:file "fig1-04")
-                                           (:file "fig1-05")
-                                           (:file "fig1-06")))))))
+                              :components ((:file "util")
+                                           (:file "fig1-02")
+                                           (:file "fig1-04" :depends-on ("util"))
+                                           (:file "fig1-05" :depends-on ("util"))
+                                           (:file "fig1-06" :depends-on ("util"))))))))
