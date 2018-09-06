@@ -83,9 +83,6 @@
         ((>= i (length w)) yn)
       (setf yn (+ yn (* (aref w i) (expt xn i)))))))
 
-(defun estimated-y (x w)
-  (map 'vector (lambda (xn) (estimated-yn xn w)) x))
-
 (defun e (x y w)
   (* 1/2 (loop :for n :below (length x)
                :summing (expt (- (estimated-yn (aref x n) w) (aref y n)) 2))))
