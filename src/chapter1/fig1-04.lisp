@@ -75,7 +75,7 @@
         (dotimes (j (+ 2 m))
           (setf (aref matrix i j) (aij i j)))
         (setf (aref matrix i (+ 1 m)) (ti i)))
-      (gaussian-elimination matrix))))
+      (gaussian-elimination! matrix))))
 
 (defun estimated-yn (xn w)
   (let ((yn (aref w 0)))
