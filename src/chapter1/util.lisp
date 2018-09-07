@@ -92,3 +92,17 @@
 
 (defun erms (x y w)
   (sqrt (/ (* 2 (e x y w)) (length x))))
+
+(defun minimized-w-tilde (x y lambda m)
+  (labels ((aij (i j)
+             (reduce #'+ (map 'vector #'(lambda (xn) (expt xn (+ i j))) x)))
+           (aij-tilde (i j lambda)
+             (+ (aij i j) (if (= i j) lambda 0)))
+           (ti (i)
+             (reduce #'+ (map 'vector #'(lambda (xn yn) (* (expt xn i) yn)) x y))))
+    (let ((matrix (make-array (list (+ 1 m) (+ 2 m)))))
+      (dotimes (i (+ 1 m))
+        (dotimes (j (+ 2 m))
+          (setf (aref matrix i j) (aij-tilde i j lambda)))
+        (setf (aref matrix i (+ 1 m)) (ti i)))
+      (gaussian-elimination! matrix))))

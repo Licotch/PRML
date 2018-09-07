@@ -1,0 +1,25 @@
+(in-package :prml.chapter1)
+
+(defun fig1-7 ()
+  (let* ((sin-x (vgplot:range 0 101/100 1/100))
+         (sin-y (map 'vector (lambda (x) (sin (* 2 pi x))) sin-x))
+         (training-set (vgplot:load-data-file (asdf:system-relative-pathname :prml "data/data.csv")))
+         (x (first training-set))
+         (y (second training-set))
+         (estimated-x sin-x))
+    (labels ((subplot (subplot-n ln-lambda)
+               (vgplot:subplot 1 2 subplot-n)
+               (vgplot:plot sin-x sin-y "g;"
+                            x y "ob;"
+                            estimated-x (estimated-y estimated-x (minimized-w-tilde x y (exp ln-lambda) 9)) "r;")
+               (vgplot:text 0.8 1 (format nil "ln λ = ~a" ln-lambda) :tag 1)
+               (vgplot:grid nil)))
+      (vgplot:subplot 1 2 0)
+      (vgplot:format-plot nil "set xtics 1")
+      (vgplot:format-plot nil "set ytics 1")
+      (vgplot:axis '(-0.1 1.1 -1.5 1.5))
+      (vgplot:xlabel "x")
+      (vgplot:ylabel "t")
+
+      (subplot 0 -18)
+      (subplot 1 0))))

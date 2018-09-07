@@ -8,4 +8,5 @@
                                            (:file "fig1-02")
                                            (:file "fig1-04" :depends-on ("util"))
                                            (:file "fig1-05" :depends-on ("util"))
-                                           (:file "fig1-06" :depends-on ("util"))))))))
+                                           (:file "fig1-06" :depends-on ("util"))
+                                           (:file "fig1-07" :depends-on ("util"))))))))

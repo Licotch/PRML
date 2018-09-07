@@ -32,4 +32,5 @@
     (task "fig1-2" () (save-plot #'prml.chapter1:fig1-2 #P"img/chapter1/fig1-02.png"))
     (task "fig1-4" () (save-multiplot #'prml.chapter1:fig1-4 #P"img/chapter1/fig1-04.png"))
     (task "fig1-5" () (save-plot #'prml.chapter1:fig1-5 #P"img/chapter1/fig1-05.png"))
-    (task "fig1-6" () (save-multiplot #'prml.chapter1:fig1-6 #P"img/chapter1/fig1-06.png" 1000 350))))
+    (task "fig1-6" () (save-multiplot #'prml.chapter1:fig1-6 #P"img/chapter1/fig1-06.png" 1000 350))
+    (task "fig1-7" () (save-multiplot #'prml.chapter1:fig1-7 #P"img/chapter1/fig1-07.png" 1000 350))))
