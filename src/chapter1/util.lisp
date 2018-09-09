@@ -107,5 +107,5 @@
         (setf (aref matrix i (+ 1 m)) (ti i)))
       (gaussian-elimination! matrix))))
 
-(defun gaussian-distribution (mu sigma x)
-  (* (/ 1 (sqrt (* 2 pi (expt sigma 2)))) (exp (* -1 (/ (expt (- x mu) 2) (* 2 (expt sigma 2)))))))
+(defun gaussian-distribution (mu sigma^2 x)
+  (* (/ 1 (sqrt (* 2 pi sigma^2))) (exp (* -1 (/ (expt (- x mu) 2) (* 2 sigma^2))))))

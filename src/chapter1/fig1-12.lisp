@@ -2,8 +2,8 @@
 
 (defun fig1-12 ()
   (let* ((x (vgplot:range -101/100 101/100 1/100))
-         (y (map 'vector #'(lambda (xn) (+ (gaussian-distribution 0.2 0.15 xn)
-                                           (gaussian-distribution 0.7 0.1 xn)))
+         (y (map 'vector #'(lambda (xn) (+ (gaussian-distribution 0.2 (expt 0.15 2) xn)
+                                           (gaussian-distribution 0.7 (expt 0.1 2) xn)))
                  x))
          (y2 (make-array (1- (length x)))))
     (setf (aref y2 0) (* 1/100 (/ (+ (aref y 0) (aref y 1)) 2)))
